@@ -1,4 +1,4 @@
-﻿namespace Unctad.eRegulations.Library.Image;
+﻿namespace dotnet_image_thumbnail.Library.Image;
 
 /// <summary>
 /// Provides functionality for managing image thumbnail file names and paths.
