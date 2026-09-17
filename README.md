@@ -1,13 +1,14 @@
 # .NET Image Thumbnail Library
 
-A high-performance .NET 10 library for creating image thumbnails with support for multiple image formats and advanced processing capabilities. The library provides **two implementation options**:
+A high-performance .NET 10 library for creating image thumbnails with support for multiple image formats and advanced processing capabilities. The library provides **three providers**, selected at runtime via dependency injection:
 
-- **SkiaSharp Implementation** (main branch): Cross-platform solution with superior image quality
-- **GDI+ Implementation** (windows branch): Windows-native solution using System.Drawing
+- **Skia** (`ImageProvider.Skia`): Cross-platform solution with superior image quality
+- **Advanced Skia** (`ImageProvider.AdvancedSkia`): Cross-platform with advanced processing (cropping, filtering, format conversion)
+- **GDI+** (`ImageProvider.GdiPlus`): Windows-native solution using System.Drawing
 
 ## 🚀 Features
 
-- **Multiple Implementation Options**: Choose between SkiaSharp (cross-platform) or GDI+ (Windows-native)
+- **Multiple Implementation Options**: Choose between SkiaSharp (cross-platform) or GDI+ (Windows-native) via dependency injection
 - **High-Quality Thumbnail Generation**: Create thumbnails with variable width/height while maintaining aspect ratio
 - **Advanced Image Processing**: Enhanced implementation with cropping, filtering, and format conversion
 - **Multiple Image Formats**: Support for PNG, JPEG, WebP, AVIF, BMP, GIF, and ICO formats
@@ -20,21 +21,24 @@ A high-performance .NET 10 library for creating image thumbnails with support fo
 ### Prerequisites
 
 - .NET 10.0 or higher
-- SkiaSharp 3.119.4 (for SkiaSharp implementation)
-- System.Drawing (for GDI+ implementation on Windows)
+- SkiaSharp 3.119.4 (SkiaSharp providers)
+- System.Drawing.Common 10.0.12 (GDI+ provider, Windows-only)
+- Codenet.Drawing.Common.GdiPlus 2.0.4 (GDI+ provider)
 
 ### Package Installation
 
-**For SkiaSharp Implementation (main branch):**
+Build the library:
 ```bash
-dotnet add package SkiaSharp
+dotnet build
 ```
 
-**For GDI+ Implementation (windows branch):**
-```bash
-# Switch to windows branch
-git checkout windows
-# No additional packages required - uses built-in System.Drawing
+Register image services and choose a provider:
+```csharp
+using dotnet_image_thumbnail.Library.Image.Configuration;
+
+services.AddImageServices(ImageProvider.Skia);         // default, cross-platform
+services.AddImageServices(ImageProvider.AdvancedSkia); // cross-platform, advanced features
+services.AddImageServices(ImageProvider.GdiPlus);      // Windows-only
 ```
 
 ## 🏗️ Architecture
@@ -51,32 +55,31 @@ The library is built around a modular architecture with clear separation of conc
 
 - **`IEnhancedImageHelper`**: Advanced features including cropping, filtering, and format conversion
 
-### Choosing Your Implementation
+### Choosing a Provider
 
-**SkiaSharp Implementation (main branch)** - Recommended for:
+**SkiaSharp** (`ImageProvider.Skia` / `ImageProvider.AdvancedSkia`) - Recommended for:
 - Cross-platform applications (Windows, macOS, Linux)
 - Applications requiring advanced image processing features
 - Modern image format support (WebP, AVIF)
 - High-quality image rendering with anti-aliasing
 
-**GDI+ Implementation (windows branch)** - Recommended for:
+**GDI+** (`ImageProvider.GdiPlus`) - Recommended for:
 - Windows-only applications
-- Minimal dependencies and smaller deployment size
 - Integration with existing System.Drawing code
 - Legacy system compatibility
 
 ## 📊 Implementation Comparison
 
-| Feature | SkiaSharp (main) | GDI+ (windows) |
-|---------|------------------|----------------|
+| Feature | SkiaSharp | GDI+ |
+|---------|-----------|------|
 | **Platform Support** | Windows, macOS, Linux | Windows only |
-| **Dependencies** | SkiaSharp NuGet package | Built-in System.Drawing |
+| **Dependencies** | SkiaSharp NuGet package | System.Drawing.Common + Codenet.Drawing.Common.GdiPlus |
 | **Modern Formats** | WebP, AVIF, all formats | Limited format support |
 | **Image Quality** | Superior anti-aliasing | Standard quality |
 | **Performance** | Optimized for all platforms | Windows-optimized |
 | **Memory Usage** | Efficient with proper disposal | Native .NET memory management |
 | **Advanced Features** | Filtering, cropping, effects | Basic operations |
-| **Deployment Size** | Larger (includes SkiaSharp) | Smaller (no external deps) |
+| **Deployment Size** | Larger (includes SkiaSharp native libs) | Windows-only |
 
 ## 🎨 Supported Image Formats
 
@@ -105,13 +108,8 @@ Example: `Thumbnail_photo_300x200.jpeg`
 
 ## 📚 Dependencies
 
-### For SkiaSharp Implementation (main branch)
-
 - **SkiaSharp**: 3.119.4 - Cross-platform 2D graphics library
+- **Microsoft.Extensions.DependencyInjection.Abstractions**: 10.0.12 - DI service registration
+- **System.Drawing.Common**: 10.0.12 - Windows native graphics (GDI+ provider, Windows-only)
+- **Codenet.Drawing.Common.GdiPlus**: 2.0.4 - GDI+ color quantization (GDI+ provider)
 - **.NET**: 10.0 - Target framework
-
-### For GDI+ Implementation (windows branch)
-
-- **System.Drawing**: Built-in - Windows native graphics library
-- **.NET**: 10.0 - Target framework
-- **Windows**: Required platform

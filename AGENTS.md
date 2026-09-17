@@ -8,6 +8,8 @@ Guidance for AI coding agents working in this repository.
 - C# 14 (`LangVersion` 14.0)
 - SkiaSharp 3.119.4
 - Microsoft.Extensions.DependencyInjection.Abstractions 10.0.12
+- System.Drawing.Common 10.0.12 (Windows-only, GDI+ provider)
+- Codenet.Drawing.Common.GdiPlus 2.0.4 (GDI+ quantization)
 
 ## Build
 
@@ -23,6 +25,7 @@ No test project currently exists.
 - Root namespace: `dotnet_image_thumbnail`
 - Interfaces: `dotnet_image_thumbnail.Library.Image`
 - Skia implementations: `dotnet_image_thumbnail.Library.Image.Skia`
+- GDI+ implementations: `dotnet_image_thumbnail.Library.Image.GdiPlus`
 - Configuration: `dotnet_image_thumbnail.Library.Image.Configuration`
 
 ## Code Style
