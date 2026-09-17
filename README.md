@@ -1,6 +1,6 @@
 # .NET Image Thumbnail Library
 
-A high-performance .NET 8 library for creating image thumbnails with support for multiple image formats and advanced processing capabilities. The library provides **two implementation options**:
+A high-performance .NET 10 library for creating image thumbnails with support for multiple image formats and advanced processing capabilities. The library provides **two implementation options**:
 
 - **SkiaSharp Implementation** (main branch): Cross-platform solution with superior image quality
 - **GDI+ Implementation** (windows branch): Windows-native solution using System.Drawing
@@ -19,8 +19,8 @@ A high-performance .NET 8 library for creating image thumbnails with support for
 
 ### Prerequisites
 
-- .NET 8.0 or higher
-- SkiaSharp 3.119.1 (for SkiaSharp implementation)
+- .NET 10.0 or higher
+- SkiaSharp 3.119.4 (for SkiaSharp implementation)
 - System.Drawing (for GDI+ implementation on Windows)
 
 ### Package Installation
@@ -107,11 +107,11 @@ Example: `Thumbnail_photo_300x200.jpeg`
 
 ### For SkiaSharp Implementation (main branch)
 
-- **SkiaSharp**: 3.119.1 - Cross-platform 2D graphics library
-- **.NET**: 8.0 - Target framework
+- **SkiaSharp**: 3.119.4 - Cross-platform 2D graphics library
+- **.NET**: 10.0 - Target framework
 
 ### For GDI+ Implementation (windows branch)
 
 - **System.Drawing**: Built-in - Windows native graphics library
-- **.NET**: 8.0 - Target framework
+- **.NET**: 10.0 - Target framework
 - **Windows**: Required platform

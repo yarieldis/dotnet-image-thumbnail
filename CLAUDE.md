@@ -4,21 +4,22 @@ This file provides guidance to Claude Code when working with the **dotnet-image-
 
 ## Repository Overview
 
-**Purpose**: A .NET 8 class library for creating high-quality image thumbnails with support for multiple image formats and advanced processing capabilities using SkiaSharp.
+**Purpose**: A .NET 10 class library for creating high-quality image thumbnails with support for multiple image formats and advanced processing capabilities using SkiaSharp.
 
 **Status**: Active development
 
 **Technology Stack**:
-- .NET 8.0 (class library, `Microsoft.NET.Sdk`)
-- SkiaSharp 3.119.1
-- Microsoft.Extensions.DependencyInjection.Abstractions 8.0.2
+- .NET 10.0 (class library, `Microsoft.NET.Sdk`)
+- C# 14 (`LangVersion` 14.0)
+- SkiaSharp 3.119.4
+- Microsoft.Extensions.DependencyInjection.Abstractions 10.0.12
 
 ## Project Structure
 
 ```
 dotnet-image-thumbnail/
 ├── dotnet-image-thumbnail.sln            # Solution file
-├── dotnet-image-thumbnail.csproj         # Project file (library, net8.0)
+├── dotnet-image-thumbnail.csproj         # Project file (library, net10.0)
 ├── Library/
 │   └── Image/
 │       ├── IImageHelper.cs               # Basic thumbnail creation interface
@@ -80,14 +81,18 @@ Two Skia-based providers are available:
 - Skia implementations: `dotnet_image_thumbnail.Library.Image.Skia`
 - Configuration: `dotnet_image_thumbnail.Library.Image.Configuration`
 
+### Performance Conventions
+- Prefer `ReadOnlySpan<T>`/`Span<T>` over allocating collections and `byte[]` copies where SkiaSharp exposes span overloads (e.g. `SKBitmap.Decode(ReadOnlySpan<byte>)`, `SKData.AsSpan()`, `File.WriteAllBytes(string, ReadOnlySpan<byte>)`).
+- Avoid `stackalloc` unless the buffer is provably small; prefer `string.Create` for span-based string building.
+
 ## Supported Image Formats
 
 PNG, JPEG, WebP, AVIF, BMP, GIF, ICO
 
 ## Dependencies
 
-- **SkiaSharp** 3.119.1 - Cross-platform 2D graphics
-- **Microsoft.Extensions.DependencyInjection.Abstractions** 8.0.2 - DI service registration
+- **SkiaSharp** 3.119.4 - Cross-platform 2D graphics
+- **Microsoft.Extensions.DependencyInjection.Abstractions** 10.0.12 - DI service registration
 
 ## Git Workflow
 
