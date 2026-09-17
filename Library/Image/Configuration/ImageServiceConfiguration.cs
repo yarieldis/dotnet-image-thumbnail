@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using dotnet_image_thumbnail.Library.Image.GdiPlus;
 using dotnet_image_thumbnail.Library.Image.Skia;
 
 namespace dotnet_image_thumbnail.Library.Image.Configuration;
@@ -8,7 +9,8 @@ public static class ImageServiceConfiguration
     public enum ImageProvider
     {
         Skia,
-        AdvancedSkia
+        AdvancedSkia,
+        GdiPlus
     }
 
     public static IServiceCollection AddImageServices(this IServiceCollection services, ImageProvider provider = ImageProvider.Skia)
@@ -17,6 +19,7 @@ public static class ImageServiceConfiguration
         {
             ImageProvider.Skia => services.AddSkiaImageServices(),
             ImageProvider.AdvancedSkia => services.AddAdvancedSkiaImageServices(),
+            ImageProvider.GdiPlus => services.AddGdiPlusImageServices(),
             _ => throw new ArgumentException($"Unknown image provider: {provider}")
         };
     }
@@ -34,6 +37,14 @@ public static class ImageServiceConfiguration
         services.AddScoped<IImageQuantizer, SkiaImageQuantizer>();
         services.AddScoped<IImageHelper, AdvancedSkiaImageHelper>();
         services.AddScoped<IImageDecoder, SkiaImageDecoder>();
+        return services;
+    }
+
+    private static IServiceCollection AddGdiPlusImageServices(this IServiceCollection services)
+    {
+        services.AddScoped<IImageQuantizer, GdiPlusImageQuantizer>();
+        services.AddScoped<IImageHelper, GdiPlusImageHelper>();
+        services.AddScoped<IImageDecoder, GdiPlusImageDecoder>();
         return services;
     }
 }
