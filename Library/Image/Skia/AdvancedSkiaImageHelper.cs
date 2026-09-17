@@ -40,8 +40,7 @@ public class AdvancedSkiaImageHelper : IEnhancedImageHelper
     {
         try
         {
-            using var inputStream = new MemoryStream(content);
-            using var skBitmap = SKBitmap.Decode(inputStream);
+            using var skBitmap = SKBitmap.Decode(content);
 
             if (skBitmap == null)
                 return false;
@@ -51,7 +50,7 @@ public class AdvancedSkiaImageHelper : IEnhancedImageHelper
             using var image = SKImage.FromBitmap(skBitmap);
             using var data = image.Encode(skImageFormat, GetOptimalQuality(imageFormat));
 
-            File.WriteAllBytes(filename, data.ToArray());
+            File.WriteAllBytes(filename, data.AsSpan());
             return true;
         }
         catch
@@ -62,8 +61,7 @@ public class AdvancedSkiaImageHelper : IEnhancedImageHelper
 
     public byte[] CreateThumbnailFromBytes(byte[] imageData, IImageDecoder.EncodedImageFormat? imageFormat, int width, int height)
     {
-        using var inputStream = new MemoryStream(imageData);
-        using var skBitmap = SKBitmap.Decode(inputStream) ?? throw new ArgumentException("Unable to decode image from byte array", nameof(imageData));
+        using var skBitmap = SKBitmap.Decode(imageData) ?? throw new ArgumentException("Unable to decode image from byte array", nameof(imageData));
         return CreateHighQualityThumbnail(skBitmap, imageFormat, width, height);
     }
 
@@ -74,8 +72,7 @@ public class AdvancedSkiaImageHelper : IEnhancedImageHelper
 
     public byte[] ConvertImageFormat(byte[] imageData, IImageDecoder.EncodedImageFormat sourceFormat, IImageDecoder.EncodedImageFormat targetFormat)
     {
-        using var inputStream = new MemoryStream(imageData);
-        using var skBitmap = SKBitmap.Decode(inputStream) ?? throw new ArgumentException("Unable to decode source image", nameof(imageData));
+        using var skBitmap = SKBitmap.Decode(imageData) ?? throw new ArgumentException("Unable to decode source image", nameof(imageData));
         using var image = SKImage.FromBitmap(skBitmap);
 
         var targetSkFormat = SkiaImageDecoder.ConvertToSkiaImageFormat(targetFormat);
@@ -99,7 +96,6 @@ public class AdvancedSkiaImageHelper : IEnhancedImageHelper
             using var paint = new SKPaint
             {
                 IsAntialias = true,
-                FilterQuality = SKFilterQuality.High,
                 IsDither = true
             };
 
@@ -107,8 +103,9 @@ public class AdvancedSkiaImageHelper : IEnhancedImageHelper
             var sourceRect = new SKRect(0, 0, originalBitmap.Width, originalBitmap.Height);
             var destRect = CalculateDestinationRect(originalBitmap.Width, originalBitmap.Height, width, height);
 
-            // Draw the resized image with high quality
-            canvas.DrawBitmap(originalBitmap, sourceRect, destRect, paint);
+            // Draw the resized image with high quality sampling
+            using var sourceImage = SKImage.FromBitmap(originalBitmap);
+            canvas.DrawImage(sourceImage, sourceRect, destRect, new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear), paint);
 
             // Get the resulting image
             using var image = surface.Snapshot();
@@ -201,8 +198,7 @@ public class AdvancedSkiaImageHelper : IEnhancedImageHelper
     public byte[] ApplyImageFilters(byte[] imageData, IImageDecoder.EncodedImageFormat? format,
         float brightness = 1.0f, float contrast = 1.0f, float saturation = 1.0f)
     {
-        using var inputStream = new MemoryStream(imageData);
-        using var skBitmap = SKBitmap.Decode(inputStream);
+        using var skBitmap = SKBitmap.Decode(imageData);
 
         if (skBitmap == null)
             return imageData;

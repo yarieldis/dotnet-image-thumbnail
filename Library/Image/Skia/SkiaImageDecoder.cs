@@ -23,7 +23,7 @@ public class SkiaImageDecoder : IImageDecoder
 
     public IImageDecoder.EncodedImageFormat? GetEncodedImageFormat(string filename)
     {
-        var extension = Path.GetExtension(filename).TrimStart('.');
+        ReadOnlySpan<char> extension = Path.GetExtension(filename).AsSpan().TrimStart('.');
 
         if (Enum.TryParse<IImageDecoder.EncodedImageFormat>(extension, true, out var format))
         {

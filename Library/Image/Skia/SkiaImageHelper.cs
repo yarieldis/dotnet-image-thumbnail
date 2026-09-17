@@ -40,8 +40,7 @@ public class SkiaImageHelper : IImageHelper
     {
         try
         {
-            using var inputStream = new MemoryStream(content);
-            using var skBitmap = SKBitmap.Decode(inputStream);
+            using var skBitmap = SKBitmap.Decode(content);
 
             if (skBitmap == null)
                 return false;
@@ -51,7 +50,7 @@ public class SkiaImageHelper : IImageHelper
             using var image = SKImage.FromBitmap(skBitmap);
             using var data = image.Encode(skImageFormat, 90);
 
-            File.WriteAllBytes(filename, data.ToArray());
+            File.WriteAllBytes(filename, data.AsSpan());
             return true;
         }
         catch
