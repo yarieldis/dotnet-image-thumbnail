@@ -64,4 +64,9 @@ jobs:
           user: yarieldis
 
       - name: Push to NuGet.org
-        run: dotnet nuget push "artifacts/*.nupkg" --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+        shell: pwsh
+        run: |
+          $pkg = Get-ChildItem -Path artifacts -Recurse -Filter *.nupkg | Select-Object -First 1
+          if (-not $pkg) { throw "No .nupkg found under artifacts/" }
+          Write-Host "Pushing $($pkg.FullName)"
+          dotnet nuget push $pkg.FullName --api-key ${{ steps.login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
