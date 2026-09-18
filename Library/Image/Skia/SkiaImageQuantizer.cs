@@ -2,8 +2,17 @@ using SkiaSharp;
 
 namespace dotnet_image_thumbnail.Library.Image.Skia;
 
+/// <summary>
+/// Quantizes images using the SkiaSharp implementation to reduce color depth and file size.
+/// </summary>
 public class SkiaImageQuantizer : IImageQuantizer
 {
+    /// <summary>
+    /// Quantizes an image to reduce the number of colors while preserving visual quality.
+    /// </summary>
+    /// <param name="image">The image data as a byte array to be quantized.</param>
+    /// <param name="format">The format of the input image. If <c>null</c>, the format will be auto-detected.</param>
+    /// <returns>A byte array containing the quantized image data with reduced color palette.</returns>
     public byte[] Quantize(byte[] image, IImageDecoder.EncodedImageFormat? format)
     {
         using var skBitmap = SKBitmap.Decode(image) ?? throw new ArgumentException("Unable to decode image", nameof(image));

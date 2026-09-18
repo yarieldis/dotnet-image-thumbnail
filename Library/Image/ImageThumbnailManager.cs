@@ -1,7 +1,20 @@
 ﻿namespace dotnet_image_thumbnail.Library.Image;
 
+/// <summary>
+/// Manages the generation and caching of image thumbnail files.
+/// </summary>
+/// <param name="imageQuantizer">The image quantizer used to reduce the color depth of thumbnails.</param>
+/// <param name="imageDecoder">The image decoder used to detect image formats.</param>
+/// <param name="imageHelper">The image helper used to create and save thumbnails.</param>
 public class ImageThumbnailManager(IImageQuantizer imageQuantizer, IImageDecoder imageDecoder, IImageHelper imageHelper) : IImageThumbnailManager
 {
+    /// <summary>
+    /// Generates a thumbnail file name based on the original file path and specified dimensions.
+    /// </summary>
+    /// <param name="originalFileNamePath">The path to the original image file.</param>
+    /// <param name="thumbnailWidth">The width of the thumbnail in pixels. If <c>null</c>, width is not specified in the file name.</param>
+    /// <param name="thumbnailHeight">The height of the thumbnail in pixels. If <c>null</c>, height is not specified in the file name.</param>
+    /// <returns>A string representing the generated thumbnail file name or path.</returns>
     public string RetrieveThumbnailFileName(string originalFileNamePath, int? thumbnailWidth, int? thumbnailHeight)
     {
         if (string.IsNullOrEmpty(originalFileNamePath))

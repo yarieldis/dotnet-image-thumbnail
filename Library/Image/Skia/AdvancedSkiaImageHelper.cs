@@ -2,8 +2,18 @@ using SkiaSharp;
 
 namespace dotnet_image_thumbnail.Library.Image.Skia;
 
+/// <summary>
+/// Creates thumbnails and applies advanced image operations using the SkiaSharp implementation.
+/// </summary>
 public class AdvancedSkiaImageHelper : IEnhancedImageHelper
 {
+    /// <summary>
+    /// Creates a thumbnail image with a variable height while maintaining aspect ratio.
+    /// </summary>
+    /// <param name="filename">The path to the source image file.</param>
+    /// <param name="imageFormat">The desired output format for the thumbnail. If <c>null</c>, the original format is used.</param>
+    /// <param name="height">The target height for the thumbnail in pixels. If <c>null</c>, the original height is used.</param>
+    /// <returns>A byte array containing the thumbnail image data.</returns>
     public byte[] CreateThumbnailWithVariableHeight(string filename, IImageDecoder.EncodedImageFormat? imageFormat, int? height)
     {
         using var skBitmap = SKBitmap.Decode(filename) ?? throw new ArgumentException("Unable to decode image from file", nameof(filename));
@@ -20,6 +30,13 @@ public class AdvancedSkiaImageHelper : IEnhancedImageHelper
         return CreateHighQualityThumbnail(skBitmap, imageFormat, newWidth, newHeight);
     }
 
+    /// <summary>
+    /// Creates a thumbnail image with a variable width while maintaining aspect ratio.
+    /// </summary>
+    /// <param name="filename">The path to the source image file.</param>
+    /// <param name="imageFormat">The desired output format for the thumbnail. If <c>null</c>, the original format is used.</param>
+    /// <param name="width">The target width for the thumbnail in pixels. If <c>null</c>, the original width is used.</param>
+    /// <returns>A byte array containing the thumbnail image data.</returns>
     public byte[] CreateThumbnailWithVariableWidth(string filename, IImageDecoder.EncodedImageFormat? imageFormat, int? width)
     {
         using var skBitmap = SKBitmap.Decode(filename) ?? throw new ArgumentException("Unable to decode image from file", nameof(filename));
@@ -36,6 +53,13 @@ public class AdvancedSkiaImageHelper : IEnhancedImageHelper
         return CreateHighQualityThumbnail(skBitmap, imageFormat, newWidth, newHeight);
     }
 
+    /// <summary>
+    /// Saves image data to a file with the specified format.
+    /// </summary>
+    /// <param name="content">The image data as a byte array to be saved.</param>
+    /// <param name="imageFormat">The format in which to save the image.</param>
+    /// <param name="filename">The path where the image file will be saved.</param>
+    /// <returns><c>true</c> if the image was saved successfully; otherwise, <c>false</c>.</returns>
     public bool Save(byte[] content, IImageDecoder.EncodedImageFormat imageFormat, string filename)
     {
         try
@@ -59,17 +83,37 @@ public class AdvancedSkiaImageHelper : IEnhancedImageHelper
         }
     }
 
+    /// <summary>
+    /// Creates a thumbnail from a byte array instead of a file.
+    /// </summary>
+    /// <param name="imageData">The image data as a byte array.</param>
+    /// <param name="imageFormat">The desired output format for the thumbnail.</param>
+    /// <param name="width">The target width for the thumbnail in pixels.</param>
+    /// <param name="height">The target height for the thumbnail in pixels.</param>
+    /// <returns>A byte array containing the thumbnail image data.</returns>
     public byte[] CreateThumbnailFromBytes(byte[] imageData, IImageDecoder.EncodedImageFormat? imageFormat, int width, int height)
     {
         using var skBitmap = SKBitmap.Decode(imageData) ?? throw new ArgumentException("Unable to decode image from byte array", nameof(imageData));
         return CreateHighQualityThumbnail(skBitmap, imageFormat, width, height);
     }
 
+    /// <summary>
+    /// Detects the format of an image from its byte content.
+    /// </summary>
+    /// <param name="imageData">The image data as a byte array to analyze.</param>
+    /// <returns>The detected format if recognized; otherwise, <c>null</c>.</returns>
     public IImageDecoder.EncodedImageFormat? DetectImageFormat(byte[] imageData)
     {
         return SkiaImageDecoder.DetectImageFormat(imageData);
     }
 
+    /// <summary>
+    /// Converts an image from one format to another.
+    /// </summary>
+    /// <param name="imageData">The image data as a byte array.</param>
+    /// <param name="sourceFormat">The current format of the image.</param>
+    /// <param name="targetFormat">The format to which the image is converted.</param>
+    /// <returns>A byte array containing the converted image data.</returns>
     public byte[] ConvertImageFormat(byte[] imageData, IImageDecoder.EncodedImageFormat sourceFormat, IImageDecoder.EncodedImageFormat targetFormat)
     {
         using var skBitmap = SKBitmap.Decode(imageData) ?? throw new ArgumentException("Unable to decode source image", nameof(imageData));
@@ -158,6 +202,14 @@ public class AdvancedSkiaImageHelper : IEnhancedImageHelper
         };
     }
 
+    /// <summary>
+    /// Creates a thumbnail with cropping to maintain exact dimensions.
+    /// </summary>
+    /// <param name="filename">The path to the source image file.</param>
+    /// <param name="imageFormat">The desired output format for the thumbnail.</param>
+    /// <param name="width">The target width for the thumbnail in pixels.</param>
+    /// <param name="height">The target height for the thumbnail in pixels.</param>
+    /// <returns>A byte array containing the thumbnail image data.</returns>
     public byte[] CreateThumbnailWithCrop(string filename, IImageDecoder.EncodedImageFormat? imageFormat, int width, int height)
     {
         using var skBitmap = SKBitmap.Decode(filename) ?? throw new ArgumentException("Unable to decode image from file", nameof(filename));
@@ -195,6 +247,15 @@ public class AdvancedSkiaImageHelper : IEnhancedImageHelper
         return CreateHighQualityThumbnail(croppedBitmap, imageFormat, width, height);
     }
 
+    /// <summary>
+    /// Applies image filters (brightness, contrast, and saturation).
+    /// </summary>
+    /// <param name="imageData">The image data as a byte array.</param>
+    /// <param name="format">The desired output format for the filtered image.</param>
+    /// <param name="brightness">The brightness multiplier. Defaults to <c>1.0f</c>.</param>
+    /// <param name="contrast">The contrast multiplier. Defaults to <c>1.0f</c>.</param>
+    /// <param name="saturation">The saturation multiplier. Defaults to <c>1.0f</c>.</param>
+    /// <returns>A byte array containing the filtered image data.</returns>
     public byte[] ApplyImageFilters(byte[] imageData, IImageDecoder.EncodedImageFormat? format,
         float brightness = 1.0f, float contrast = 1.0f, float saturation = 1.0f)
     {

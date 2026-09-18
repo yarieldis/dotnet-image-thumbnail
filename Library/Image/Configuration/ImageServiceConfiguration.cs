@@ -4,15 +4,31 @@ using dotnet_image_thumbnail.Library.Image.Skia;
 
 namespace dotnet_image_thumbnail.Library.Image.Configuration;
 
+/// <summary>
+/// Provides extension methods to register image processing services in a dependency injection container.
+/// </summary>
 public static class ImageServiceConfiguration
 {
+    /// <summary>
+    /// Specifies the available image processing providers.
+    /// </summary>
     public enum ImageProvider
     {
+        /// <summary>Uses the cross-platform SkiaSharp provider.</summary>
         Skia,
+        /// <summary>Uses the SkiaSharp provider with advanced image operations.</summary>
         AdvancedSkia,
+        /// <summary>Uses the Windows-only GDI+ provider.</summary>
         GdiPlus
     }
 
+    /// <summary>
+    /// Registers the image services for the specified provider.
+    /// </summary>
+    /// <param name="services">The service collection to which the image services are added.</param>
+    /// <param name="provider">The image provider to register. Defaults to <see cref="ImageProvider.Skia"/>.</param>
+    /// <returns>The service collection so calls can be chained.</returns>
+    /// <exception cref="ArgumentException">Thrown when an unknown provider is specified.</exception>
     public static IServiceCollection AddImageServices(this IServiceCollection services, ImageProvider provider = ImageProvider.Skia)
     {
         return provider switch

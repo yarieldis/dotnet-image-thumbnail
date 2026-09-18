@@ -16,9 +16,11 @@ Guidance for AI coding agents working in this repository.
 ```bash
 dotnet build              # Debug
 dotnet build -c Release   # Release
+dotnet test               # Run xUnit tests (tests/dotnet-image-thumbnail.Tests)
 ```
 
-No test project currently exists.
+Tests live in `tests/dotnet-image-thumbnail.Tests` (xUnit). The GDI+ test is Windows-only and
+self-skips on other platforms.
 
 ## Namespace Convention
 

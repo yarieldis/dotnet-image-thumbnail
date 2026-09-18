@@ -2,10 +2,16 @@ using SkiaSharp;
 
 namespace dotnet_image_thumbnail.Library.Image.Skia;
 
+/// <summary>
+/// Decodes image formats using the SkiaSharp implementation.
+/// </summary>
 public class SkiaImageDecoder : IImageDecoder
 {
     private readonly List<IImageDecoder.EncodedImageFormat> _supportedFormats;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="SkiaImageDecoder"/> class.
+    /// </summary>
     public SkiaImageDecoder()
     {
         _supportedFormats =
@@ -21,6 +27,11 @@ public class SkiaImageDecoder : IImageDecoder
         ];
     }
 
+    /// <summary>
+    /// Determines the encoded image format based on the file name.
+    /// </summary>
+    /// <param name="filename">The path or name of the image file to analyze.</param>
+    /// <returns>The detected format if supported by SkiaSharp; otherwise, <c>null</c>.</returns>
     public IImageDecoder.EncodedImageFormat? GetEncodedImageFormat(string filename)
     {
         ReadOnlySpan<char> extension = Path.GetExtension(filename).AsSpan().TrimStart('.');
@@ -33,6 +44,12 @@ public class SkiaImageDecoder : IImageDecoder
         return null;
     }
 
+    /// <summary>
+    /// Converts a library image format to the corresponding SkiaSharp <see cref="SKEncodedImageFormat"/>.
+    /// </summary>
+    /// <param name="format">The image format to convert. If <c>null</c>, PNG is used.</param>
+    /// <returns>The matching SkiaSharp <see cref="SKEncodedImageFormat"/>.</returns>
+    /// <exception cref="ArgumentException">Thrown when the format is not supported.</exception>
     public static SKEncodedImageFormat ConvertToSkiaImageFormat(IImageDecoder.EncodedImageFormat? format)
     {
         return format switch
@@ -50,6 +67,11 @@ public class SkiaImageDecoder : IImageDecoder
         };
     }
 
+    /// <summary>
+    /// Detects the image format from the byte content of an image.
+    /// </summary>
+    /// <param name="imageData">The image data as a byte array to analyze.</param>
+    /// <returns>The detected format if recognized; otherwise, <c>null</c>.</returns>
     public static IImageDecoder.EncodedImageFormat? DetectImageFormat(byte[] imageData)
     {
         using var stream = new MemoryStream(imageData);

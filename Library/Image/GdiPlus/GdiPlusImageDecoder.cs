@@ -2,10 +2,16 @@
 
 namespace dotnet_image_thumbnail.Library.Image.GdiPlus;
 
+/// <summary>
+/// Decodes image formats using the Windows GDI+ implementation.
+/// </summary>
 public class GdiPlusImageDecoder : IImageDecoder
 {
     private readonly List<IImageDecoder.EncodedImageFormat> _allImgCodecs = [];
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GdiPlusImageDecoder"/> class.
+    /// </summary>
     public GdiPlusImageDecoder()
     {
 #pragma warning disable CA1416 // Validate platform compatibility
@@ -45,6 +51,11 @@ public class GdiPlusImageDecoder : IImageDecoder
         }
     }
 
+    /// <summary>
+    /// Determines the encoded image format based on the file name.
+    /// </summary>
+    /// <param name="filename">The path or name of the image file to analyze.</param>
+    /// <returns>The detected format if supported by GDI+; otherwise, <c>null</c>.</returns>
     public IImageDecoder.EncodedImageFormat? GetEncodedImageFormat(string filename)
     {
         var extension = filename.AsSpan(filename.LastIndexOf('.') + 1);
@@ -53,6 +64,12 @@ public class GdiPlusImageDecoder : IImageDecoder
         return _allImgCodecs?.FirstOrDefault(f => f == format);
     }
 
+    /// <summary>
+    /// Converts a library image format to the corresponding GDI+ <see cref="ImageFormat"/>.
+    /// </summary>
+    /// <param name="format">The image format to convert.</param>
+    /// <returns>The matching GDI+ <see cref="ImageFormat"/>.</returns>
+    /// <exception cref="ArgumentException">Thrown when the format is not supported.</exception>
     public static ImageFormat ConvertImageFormat(IImageDecoder.EncodedImageFormat? format)
     {
 #pragma warning disable CA1416 // Validate platform compatibility

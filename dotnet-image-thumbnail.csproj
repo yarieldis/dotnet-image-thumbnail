@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -6,6 +6,19 @@
     <RootNamespace>dotnet_image_thumbnail</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+    <!-- NuGet package metadata -->
+    <MinVerTagPrefix>v</MinVerTagPrefix>
+    <PackageId>DotnetImageThumbnail</PackageId>
+    <Authors>yarieldis</Authors>
+    <Description>A .NET 10 library for creating image thumbnails (SkiaSharp cross-platform + Windows GDI+).</Description>
+    <PackageTags>image;thumbnail;skia;gdi+;imaging;resize</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/yarieldis/dotnet-image-thumbnail</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageProjectUrl>https://github.com/yarieldis/dotnet-image-thumbnail</PackageProjectUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +26,21 @@
     <PackageReference Include="System.Drawing.Common" Version="10.0.12" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
     <PackageReference Include="SkiaSharp" Version="3.119.4" />
+    <!-- Tag-driven versioning: version is derived from the nearest git tag (v*) -->
+    <PackageReference Include="MinVer" Version="8.0.0" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Keep test sources (under the repo root) out of the library build and package. -->
+  <ItemGroup>
+    <Compile Remove="tests/**" />
+    <None Remove="tests/**" />
+    <Content Remove="tests/**" />
+    <EmbeddedResource Remove="tests/**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="README.md" Pack="true" PackagePath="/" />
+    <None Include="LICENSE" Pack="true" PackagePath="/" />
   </ItemGroup>
 
 </Project>
