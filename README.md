@@ -1,5 +1,7 @@
 # .NET Image Thumbnail Library
 
+[![NuGet](https://img.shields.io/nuget/v/DotnetImageThumbnail.svg?label=NuGet)](https://www.nuget.org/packages/DotnetImageThumbnail/)
+
 A high-performance .NET 10 library for creating image thumbnails with support for multiple image formats and advanced processing capabilities. The library provides **three providers**, selected at runtime via dependency injection:
 
 - **Skia** (`ImageProvider.Skia`): Cross-platform solution with superior image quality
@@ -26,6 +28,11 @@ A high-performance .NET 10 library for creating image thumbnails with support fo
 - Codenet.Drawing.Common.GdiPlus 2.0.4 (GDI+ provider)
 
 ### Package Installation
+
+Install from [NuGet](https://www.nuget.org/packages/DotnetImageThumbnail/):
+```bash
+dotnet add package DotnetImageThumbnail
+```
 
 Build the library:
 ```bash
