@@ -97,6 +97,8 @@ The library is built around a modular architecture with clear separation of conc
 
 - **`IEnhancedImageHelper`**: Advanced features including cropping, filtering, and format conversion
 
+See [Extending the Library](docs/extending-the-library.md) for a guide to implementing your own versions of these interfaces and wiring them into your solution.
+
 ### Choosing a Provider
 
 **SkiaSharp** (`ImageProvider.Skia` / `ImageProvider.AdvancedSkia`) - Recommended for:
