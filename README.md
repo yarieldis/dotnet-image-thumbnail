@@ -48,6 +48,41 @@ services.AddImageServices(ImageProvider.AdvancedSkia); // cross-platform, advanc
 services.AddImageServices(ImageProvider.GdiPlus);      // Windows-only
 ```
 
+## 🖥️ Usage
+
+The easiest way to use the library is through `IImageThumbnailManager`. It handles
+thumbnail naming, generation, and caching for you — you only provide the source
+image path and the dimensions you want.
+
+```csharp
+using dotnet_image_thumbnail.Library.Image;
+using dotnet_image_thumbnail.Library.Image.Configuration;
+
+// Register once (e.g. in Program.cs)
+builder.Services.AddImageServices(); // defaults to ImageProvider.Skia
+
+// Inject and use
+public class MyController(IImageThumbnailManager thumbnails)
+{
+    public string GetThumbnail(string imagePath)
+    {
+        // Creates the thumbnail on disk if missing (or stale) and returns a
+        // URL-safe file name. Pass width OR height to preserve aspect ratio.
+        return thumbnails.RetrieveThumbnailFileName(
+            imagePath,
+            thumbnailWidth: 300,
+            thumbnailHeight: null);
+    }
+}
+```
+
+- `thumbnailWidth` only → fixed width, variable height (aspect ratio preserved)
+- `thumbnailHeight` only → fixed height, variable width
+- Both `null` → throws, since no target dimension was provided
+
+Thumbnails are cached on disk: a thumbnail is only regenerated when the original
+file has been modified more recently than the thumbnail.
+
 ## 🏗️ Architecture
 
 The library is built around a modular architecture with clear separation of concerns:
@@ -58,7 +93,7 @@ The library is built around a modular architecture with clear separation of conc
 - **`IImageDecoder`**: Image format detection and conversion utilities
 - **`IImageQuantizer`**: Color quantization for optimized file sizes
 
-- **`IImageThumbnailManager`**: High-level thumbnail management with caching
+- **`IImageThumbnailManager`**: High-level thumbnail management with caching — **the recommended entry point** (see [Usage](#usage))
 
 - **`IEnhancedImageHelper`**: Advanced features including cropping, filtering, and format conversion
 
