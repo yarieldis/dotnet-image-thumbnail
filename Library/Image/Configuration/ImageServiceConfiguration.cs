@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using dotnet_image_thumbnail.Library.Image.GdiPlus;
 using dotnet_image_thumbnail.Library.Image.Skia;
 
@@ -31,6 +32,7 @@ public static class ImageServiceConfiguration
     /// <exception cref="ArgumentException">Thrown when an unknown provider is specified.</exception>
     public static IServiceCollection AddImageServices(this IServiceCollection services, ImageProvider provider = ImageProvider.Skia)
     {
+        services.TryAddScoped<IImageThumbnailManager, ImageThumbnailManager>();
         return provider switch
         {
             ImageProvider.Skia => services.AddSkiaImageServices(),
@@ -42,25 +44,25 @@ public static class ImageServiceConfiguration
 
     private static IServiceCollection AddSkiaImageServices(this IServiceCollection services)
     {
-        services.AddScoped<IImageQuantizer, SkiaImageQuantizer>();
-        services.AddScoped<IImageHelper, SkiaImageHelper>();
-        services.AddScoped<IImageDecoder, SkiaImageDecoder>();
+        services.TryAddScoped<IImageQuantizer, SkiaImageQuantizer>();
+        services.TryAddScoped<IImageHelper, SkiaImageHelper>();
+        services.TryAddScoped<IImageDecoder, SkiaImageDecoder>();
         return services;
     }
 
     private static IServiceCollection AddAdvancedSkiaImageServices(this IServiceCollection services)
     {
-        services.AddScoped<IImageQuantizer, SkiaImageQuantizer>();
-        services.AddScoped<IImageHelper, AdvancedSkiaImageHelper>();
-        services.AddScoped<IImageDecoder, SkiaImageDecoder>();
+        services.TryAddScoped<IImageQuantizer, SkiaImageQuantizer>();
+        services.TryAddScoped<IImageHelper, AdvancedSkiaImageHelper>();
+        services.TryAddScoped<IImageDecoder, SkiaImageDecoder>();
         return services;
     }
 
     private static IServiceCollection AddGdiPlusImageServices(this IServiceCollection services)
     {
-        services.AddScoped<IImageQuantizer, GdiPlusImageQuantizer>();
-        services.AddScoped<IImageHelper, GdiPlusImageHelper>();
-        services.AddScoped<IImageDecoder, GdiPlusImageDecoder>();
+        services.TryAddScoped<IImageQuantizer, GdiPlusImageQuantizer>();
+        services.TryAddScoped<IImageHelper, GdiPlusImageHelper>();
+        services.TryAddScoped<IImageDecoder, GdiPlusImageDecoder>();
         return services;
     }
 }

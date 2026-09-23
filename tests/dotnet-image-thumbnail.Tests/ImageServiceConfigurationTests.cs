@@ -17,6 +17,7 @@ public class ImageServiceConfigurationTests
         Assert.IsType<SkiaImageHelper>(provider.GetRequiredService<IImageHelper>());
         Assert.IsType<SkiaImageDecoder>(provider.GetRequiredService<IImageDecoder>());
         Assert.IsType<SkiaImageQuantizer>(provider.GetRequiredService<IImageQuantizer>());
+        Assert.IsType<ImageThumbnailManager>(provider.GetRequiredService<IImageThumbnailManager>());
     }
 
     [Fact]
