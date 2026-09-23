@@ -17,7 +17,7 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/yarieldis/dotnet-image-thumbnail</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageProjectUrl>https://github.com/yarieldis/dotnet-image-thumbnail</PackageProjectUrl>
+    <PackageProjectUrl>https://yarieldis.github.io/dotnet-image-thumbnail/</PackageProjectUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
