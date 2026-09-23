@@ -1,0 +1,50 @@
+site_name: .NET Image Thumbnail Library
+site_description: High-performance .NET 10 library for creating image thumbnails with multiple providers.
+site_url: https://yarieldis.github.io/dotnet-image-thumbnail/
+repo_url: https://github.com/yarieldis/dotnet-image-thumbnail
+repo_name: yarieldis/dotnet-image-thumbnail
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - tables
+  - toc:
+      permalink: true
+
+plugins:
+  - search
+
+nav:
+  - Home: index.md
+  - Guides:
+      - Extending the Library: extending-the-library.md
